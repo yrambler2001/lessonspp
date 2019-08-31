@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {Fragment} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -25,6 +25,16 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const App = () => {
+  const [a, setA] = useState(() => {
+    fetch('https://facebook.github.io/react-native/movies.json')
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson.movies);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });
   return (
     <Fragment>
       <StatusBar barStyle="dark-content" />
@@ -43,7 +53,7 @@ const App = () => {
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
+                screen and then come back to see your edits.2
               </Text>
             </View>
             <View style={styles.sectionContainer}>

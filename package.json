@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
+    "start-android": "react-native run-android",
+    "fix-debug": "adb reverse tcp:8097 tcp:8097",
+    "debug": "react-devtools",
     "test": "jest",
     "lint": "eslint ."
   },
