@@ -6,16 +6,16 @@
  * @flow
  */
 
-import React, {useState, useMemo, Fragment, useEffect} from 'react';
-import {StyleSheet, ScrollView, View, Text} from 'react-native';
+import React, { useState, useMemo, Fragment, useEffect } from 'react';
+import { StyleSheet, ScrollView, View, Text } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import Test from './include/Test';
-import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import iconv from 'iconv-lite';
 // eslint-disable-next-line import/no-nodejs-modules
-import {Buffer} from 'buffer';
+import { Buffer } from 'buffer';
 import parse5 from 'parse5';
 import _ from 'lodash';
 
@@ -43,7 +43,7 @@ const fetchJSON = url =>
 
 function findNodeDFS(document, id) {
   for (const object of Array.isArray(document) ? document : [document]) {
-    if (object && object.attrs && _.find(object.attrs, {value: id})) {
+    if (object && object.attrs && _.find(object.attrs, { value: id })) {
       return object;
     }
     const fromRecursive =
