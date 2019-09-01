@@ -1,0 +1,43 @@
+root: true
+parser: babel-eslint
+plugins:
+- react-hooks
+extends:
+- react-native
+- '@react-native-community'
+rules:
+  import/no-extraneous-dependencies:
+  - error
+  - devDependencies: true
+  jsx-a11y/no-static-element-interactions: 0
+  jsx-a11y/click-events-have-key-events: 0
+  max-len: 0
+  no-alert: 0
+  object-curly-newline: 0
+  no-param-reassign: 0
+  no-underscore-dangle: 0
+  import/no-absolute-path: 0
+  react/jsx-filename-extension: 0
+  react/prefer-stateless-function: 0
+  react/require-default-props: 0
+  react/prop-types: 0
+  import/no-named-as-default: 0
+  template-curly-spacing: 0
+  indent: 0
+  import/no-cycle: 0
+  no-unused-expressions: 0
+  jsx-a11y/label-has-associated-control: 0
+  jsx-a11y/label-has-for: 0
+  import/prefer-default-export: 0
+  import/named: 0
+  no-console: 0
+  react/forbid-prop-types: 0
+  react/jsx-one-expression-per-line: 0
+  no-shadow: 0
+  no-plusplus: 0
+  class-methods-use-this: 0
+  one-var: 0
+  one-var-declaration-per-line: 0
+  prefer-destructuring: 2
+  react-hooks/rules-of-hooks: 2
+  react-hooks/exhaustive-deps: 1
