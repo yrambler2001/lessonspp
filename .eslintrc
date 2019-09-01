@@ -3,7 +3,6 @@ plugins:
 - react-hooks
 extends:
 - react-native
-- '@react-native-community'
 rules:
   import/no-extraneous-dependencies:
   - error
