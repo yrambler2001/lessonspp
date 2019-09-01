@@ -5,21 +5,37 @@
   "scripts": {
     "start": "react-native start",
     "start-android": "react-native run-android",
-    "fix-debug": "adb reverse tcp:8097 tcp:8097",
+    "fix-debug": "adb reverse tcp:8081 tcp:8081",
     "debug": "react-devtools",
+    "clean-gradlew": "cd ./android ./gradlew clean",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
+    "buffer": "^5.4.2",
+    "fast-xml-parser": "^3.12.20",
+    "he": "^1.2.0",
+    "iconv-lite": "^0.5.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "needle": "^2.4.0",
+    "node-html-parser": "^1.1.16",
+    "parse5": "^5.1.0",
     "react": "16.8.6",
-    "react-native": "0.60.5"
+    "react-native": "0.60.5",
+    "react-native-fs": "^2.14.1",
+    "react-native-gesture-handler": "^1.4.1",
+    "react-native-reanimated": "^1.2.0",
+    "react-native-tab-view": "^2.10.0",
+    "rn-viewpager": "^1.2.9"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/runtime": "^7.5.5",
-    "@react-native-community/eslint-config": "^0.0.5",
+    "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "^24.9.0",
     "eslint": "^6.3.0",
+    "eslint-config-react-native": "^4.0.0",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "react-test-renderer": "16.8.6"

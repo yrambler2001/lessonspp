@@ -6,119 +6,88 @@
  * @flow
  */
 
-import React, {useState, Fragment} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {useState, useMemo, Fragment, useEffect} from 'react';
+import {StyleSheet, ScrollView, View, Text} from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+import Test from './include/Test';
+import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
+import iconv from 'iconv-lite';
+// eslint-disable-next-line import/no-nodejs-modules
+import {Buffer} from 'buffer';
+import parse5 from 'parse5';
+import _ from 'lodash';
+
+const fetchJSON = url =>
+  new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+
+    request.onload = () => {
+      if (request.status === 200) {
+        resolve(iconv.decode(Buffer.from(request.response), 'windows-1251'));
+      } else {
+        reject(new Error(request.statusText));
+      }
+    };
+    request.onerror = () => reject(new Error(request.statusText));
+    request.responseType = 'arraybuffer';
+
+    request.open('GET', url);
+    request.setRequestHeader(
+      'Content-type',
+      'text/plain; charset=windows-1251',
+    );
+    request.send();
+  });
+
+function findNodeDFS(document, id) {
+  for (const object of Array.isArray(document) ? document : [document]) {
+    if (object && object.attrs && _.find(object.attrs, {value: id})) {
+      return object;
+    }
+    const fromRecursive =
+      object && object.childNodes && findNodeDFS(object.childNodes, id);
+    if (fromRecursive) {
+      return fromRecursive;
+    }
+  }
+}
 
 const App = () => {
-  const [a, setA] = useState(() => {
-    fetch('https://facebook.github.io/react-native/movies.json')
-      .then(response => response.json())
-      .then(responseJson => {
-        console.log(responseJson.movies);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  });
-  return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.2
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Fragment>
+  const [document, setDocument] = useState();
+
+  useEffect(() => {
+    const f = async () => {
+      const document = await fetchJSON(
+        'http://tntu.edu.ua/?p=uk/schedule&s=fis-sp21',
+      ).then(xmlData => parse5.parse(xmlData));
+      setDocument(document);
+    };
+    f();
+  }, []);
+
+  const table = useMemo(
+    () => document && findNodeDFS(document, 'ScheduleWeek'),
+    [document],
   );
+
+  console.log(table);
+
+  return <Test />;
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+// const styles = StyleSheet.create({
+//   scrollView: {
+//     backgroundColor: Colors.lighter,
+//   },
+//   engine: {
+//     position: 'absolute',
+//     right: 0,
+//   },
+//   body: {
+//     backgroundColor: Colors.white,
+//   },
+// });
 
-export default App;
+export default gestureHandlerRootHOC(App);
